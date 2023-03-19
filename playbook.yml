@@ -2,6 +2,7 @@
 ---
 - name: Instalação e Configuração do Zabbix 6.0 LTS com PostgreSQL no Ubuntu 22.04
   hosts: 127.0.0.1
+  become: true
   ignore_errors: true
 
   vars:
@@ -44,7 +45,7 @@
         encrypted: true
         state: present
 
-    - name: Criação da base de dados PostgreSQL para o Zabbix
+    - name: Criação-da-base-de-dados-PostgreSQL-para-o-Zabbix
       postgresql_db:
         name: "{{ zabbix_db_name }}"
         owner: "{{ zabbix_db_user }}"
@@ -54,7 +55,7 @@
         template: template0
         state: present
 
-    - name: Importação do esquema da base de dados do Zabbix
+    - name: Importação-do-esquema-da-base-de-dados-do-Zabbix
       command: psql -U {{ zabbix_db_user }} -d {{ zabbix_db_name }} -f /usr/share/doc/zabbix-server-pgsql/create.sql.gz
       tags:
         - postgres
@@ -99,7 +100,7 @@
         - servicos
 
   handlers:
-    - name: reinicialização do zabbix-server
+    - name: reinicialização-do-zabbix-server
       service:
         name: zabbix-server
         state: restarted
